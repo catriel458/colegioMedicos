@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 export default function CreateAppointment() {
   const { toast } = useToast();
@@ -31,6 +33,7 @@ export default function CreateAppointment() {
     defaultValues: {
       observations: "",
     },
+    mode: "onChange", // Validar mientras el usuario escribe
   });
 
   const createMutation = useMutation({
@@ -40,19 +43,32 @@ export default function CreateAppointment() {
     },
     onSuccess: () => {
       toast({
-        title: "Turno creado",
-        description: "El turno ha sido registrado exitosamente",
+        title: "¡Turno creado exitosamente!",
+        description: "Su turno ha sido registrado correctamente en el sistema.",
       });
       form.reset();
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "No se pudo crear el turno",
+        title: "Error al crear el turno",
+        description: "Por favor, verifique los datos ingresados e intente nuevamente.",
         variant: "destructive",
       });
     },
   });
+
+  const onSubmit = (data: InsertAppointment) => {
+    // Verificar si hay errores antes de enviar
+    if (Object.keys(form.formState.errors).length > 0) {
+      toast({
+        title: "Error de validación",
+        description: "Por favor, corrija los errores en el formulario antes de continuar.",
+        variant: "destructive",
+      });
+      return;
+    }
+    createMutation.mutate(data);
+  };
 
   return (
     <Card>
@@ -62,9 +78,18 @@ export default function CreateAppointment() {
       <CardContent>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit((data) => createMutation.mutate(data))}
+            onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4"
           >
+            {form.formState.errors.root && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  {form.formState.errors.root.message}
+                </AlertDescription>
+              </Alert>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -73,7 +98,11 @@ export default function CreateAppointment() {
                   <FormItem>
                     <FormLabel>Nombre</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ingrese su nombre" {...field} />
+                      <Input 
+                        placeholder="Ingrese su nombre" 
+                        {...field}
+                        className={form.formState.errors.name ? "border-red-500" : ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -86,7 +115,11 @@ export default function CreateAppointment() {
                   <FormItem>
                     <FormLabel>Apellido</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ingrese su apellido" {...field} />
+                      <Input 
+                        placeholder="Ingrese su apellido" 
+                        {...field}
+                        className={form.formState.errors.lastName ? "border-red-500" : ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -102,7 +135,11 @@ export default function CreateAppointment() {
                   <FormItem>
                     <FormLabel>DNI</FormLabel>
                     <FormControl>
-                      <Input placeholder="11111111" {...field} />
+                      <Input 
+                        placeholder="11111111" 
+                        {...field}
+                        className={form.formState.errors.dni ? "border-red-500" : ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -115,7 +152,11 @@ export default function CreateAppointment() {
                   <FormItem>
                     <FormLabel>Teléfono</FormLabel>
                     <FormControl>
-                      <Input placeholder="21122222" {...field} />
+                      <Input 
+                        placeholder="21122222" 
+                        {...field}
+                        className={form.formState.errors.phone ? "border-red-500" : ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -134,7 +175,7 @@ export default function CreateAppointment() {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className={form.formState.errors.district ? "border-red-500" : ""}>
                         <SelectValue placeholder="Seleccione distrito" />
                       </SelectTrigger>
                     </FormControl>
@@ -159,7 +200,11 @@ export default function CreateAppointment() {
                   <FormItem>
                     <FormLabel>Fecha</FormLabel>
                     <FormControl>
-                      <Input type="date" {...field} />
+                      <Input 
+                        type="date" 
+                        {...field}
+                        className={form.formState.errors.appointmentDate ? "border-red-500" : ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -176,7 +221,7 @@ export default function CreateAppointment() {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className={form.formState.errors.appointmentTime ? "border-red-500" : ""}>
                           <SelectValue placeholder="Seleccione horario" />
                         </SelectTrigger>
                       </FormControl>
@@ -212,7 +257,7 @@ export default function CreateAppointment() {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className={form.formState.errors.procedure ? "border-red-500" : ""}>
                         <SelectValue placeholder="Seleccione trámite" />
                       </SelectTrigger>
                     </FormControl>
@@ -247,7 +292,7 @@ export default function CreateAppointment() {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className={form.formState.errors.profession ? "border-red-500" : ""}>
                         <SelectValue placeholder="Seleccione profesión" />
                       </SelectTrigger>
                     </FormControl>
@@ -277,7 +322,9 @@ export default function CreateAppointment() {
                   <FormControl>
                     <Textarea
                       placeholder="Ingrese observaciones adicionales"
+                      className={form.formState.errors.observations ? "border-red-500" : ""}
                       {...field}
+                      value={field.value || ""}
                     />
                   </FormControl>
                   <FormMessage />
