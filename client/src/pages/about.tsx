@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Github, Globe, Code, Database, Layout } from "lucide-react";
+import { Github, Code, Database, Layout } from "lucide-react";
 
 export default function About() {
   const features = [
@@ -31,9 +31,8 @@ export default function About() {
           <CardContent className="pt-6">
             <p className="text-lg leading-relaxed text-muted-foreground">
               Este proyecto es una demostración técnica de un sistema de gestión de turnos médicos,
-              desarrollado como parte de mi portafolio personal. Implementa un conjunto completo
-              de funcionalidades CRUD con una arquitectura moderna y prácticas de desarrollo
-              profesionales.
+              implementando un conjunto completo de funcionalidades CRUD con una arquitectura moderna 
+              y prácticas de desarrollo profesionales.
             </p>
           </CardContent>
         </Card>
@@ -56,22 +55,13 @@ export default function About() {
 
         <div className="flex justify-center gap-4 mt-8">
           <a
-            href="https://github.com/tuusuario/proyecto"
+            href="https://github.com/catriel458/medical-appointments"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-primary hover:text-primary/90"
           >
             <Github className="h-5 w-5" />
             Ver en GitHub
-          </a>
-          <a
-            href="https://tuportfolio.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-primary hover:text-primary/90"
-          >
-            <Globe className="h-5 w-5" />
-            Portafolio
           </a>
         </div>
       </section>

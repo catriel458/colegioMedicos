@@ -11,6 +11,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -23,8 +24,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle, Check, Info } from "lucide-react";
 
 export default function CreateAppointment() {
   const { toast } = useToast();
@@ -58,11 +59,12 @@ export default function CreateAppointment() {
   });
 
   const onSubmit = (data: InsertAppointment) => {
-    // Verificar si hay errores antes de enviar
-    if (Object.keys(form.formState.errors).length > 0) {
+    // Verificar el número total de errores
+    const errorCount = Object.keys(form.formState.errors).length;
+    if (errorCount > 0) {
       toast({
-        title: "Error de validación",
-        description: "Por favor, corrija los errores en el formulario antes de continuar.",
+        title: `${errorCount} ${errorCount === 1 ? 'error encontrado' : 'errores encontrados'}`,
+        description: "Por favor, corrija los errores marcados en rojo antes de continuar.",
         variant: "destructive",
       });
       return;
@@ -76,6 +78,15 @@ export default function CreateAppointment() {
         <CardTitle>Solicitar Turno</CardTitle>
       </CardHeader>
       <CardContent>
+        <Alert className="mb-6">
+          <Info className="h-4 w-4" />
+          <AlertTitle>Información Importante</AlertTitle>
+          <AlertDescription>
+            Complete todos los campos obligatorios marcados con *. Los turnos están disponibles
+            solo para los próximos 30 días y en horarios específicos.
+          </AlertDescription>
+        </Alert>
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -96,7 +107,7 @@ export default function CreateAppointment() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nombre</FormLabel>
+                    <FormLabel>Nombre *</FormLabel>
                     <FormControl>
                       <Input 
                         placeholder="Ingrese su nombre" 
@@ -104,6 +115,9 @@ export default function CreateAppointment() {
                         className={form.formState.errors.name ? "border-red-500" : ""}
                       />
                     </FormControl>
+                    <FormDescription>
+                      Solo letras y espacios permitidos
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -113,7 +127,7 @@ export default function CreateAppointment() {
                 name="lastName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Apellido</FormLabel>
+                    <FormLabel>Apellido *</FormLabel>
                     <FormControl>
                       <Input 
                         placeholder="Ingrese su apellido" 
@@ -121,6 +135,9 @@ export default function CreateAppointment() {
                         className={form.formState.errors.lastName ? "border-red-500" : ""}
                       />
                     </FormControl>
+                    <FormDescription>
+                      Solo letras y espacios permitidos
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -133,7 +150,7 @@ export default function CreateAppointment() {
                 name="dni"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>DNI</FormLabel>
+                    <FormLabel>DNI *</FormLabel>
                     <FormControl>
                       <Input 
                         placeholder="11111111" 
@@ -141,6 +158,9 @@ export default function CreateAppointment() {
                         className={form.formState.errors.dni ? "border-red-500" : ""}
                       />
                     </FormControl>
+                    <FormDescription>
+                      7-8 dígitos, solo números
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -150,7 +170,7 @@ export default function CreateAppointment() {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Teléfono</FormLabel>
+                    <FormLabel>Teléfono *</FormLabel>
                     <FormControl>
                       <Input 
                         placeholder="21122222" 
@@ -158,6 +178,9 @@ export default function CreateAppointment() {
                         className={form.formState.errors.phone ? "border-red-500" : ""}
                       />
                     </FormControl>
+                    <FormDescription>
+                      8-15 dígitos, solo números
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -169,7 +192,7 @@ export default function CreateAppointment() {
               name="district"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Distrito</FormLabel>
+                  <FormLabel>Distrito *</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -187,6 +210,9 @@ export default function CreateAppointment() {
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormDescription>
+                    Seleccione su distrito correspondiente
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -198,7 +224,7 @@ export default function CreateAppointment() {
                 name="appointmentDate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Fecha</FormLabel>
+                    <FormLabel>Fecha *</FormLabel>
                     <FormControl>
                       <Input 
                         type="date" 
@@ -206,6 +232,9 @@ export default function CreateAppointment() {
                         className={form.formState.errors.appointmentDate ? "border-red-500" : ""}
                       />
                     </FormControl>
+                    <FormDescription>
+                      Seleccione una fecha dentro de los próximos 30 días
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -215,7 +244,7 @@ export default function CreateAppointment() {
                 name="appointmentTime"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Horario</FormLabel>
+                    <FormLabel>Horario *</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -240,6 +269,9 @@ export default function CreateAppointment() {
                         ))}
                       </SelectContent>
                     </Select>
+                    <FormDescription>
+                      Horarios disponibles de 10:00 a 12:30
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -251,7 +283,7 @@ export default function CreateAppointment() {
               name="procedure"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Trámite</FormLabel>
+                  <FormLabel>Trámite *</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -276,6 +308,9 @@ export default function CreateAppointment() {
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormDescription>
+                    Seleccione el tipo de trámite que desea realizar
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -286,7 +321,7 @@ export default function CreateAppointment() {
               name="profession"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Profesión</FormLabel>
+                  <FormLabel>Profesión *</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -308,6 +343,9 @@ export default function CreateAppointment() {
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormDescription>
+                    Indique su situación profesional
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -321,16 +359,27 @@ export default function CreateAppointment() {
                   <FormLabel>Observaciones</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Ingrese observaciones adicionales"
+                      placeholder="Ingrese observaciones adicionales (opcional)"
                       className={form.formState.errors.observations ? "border-red-500" : ""}
                       {...field}
                       value={field.value || ""}
                     />
                   </FormControl>
+                  <FormDescription>
+                    Máximo 500 caracteres
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <Alert className="mb-4" variant="default">
+              <Check className="h-4 w-4" />
+              <AlertTitle>Antes de enviar</AlertTitle>
+              <AlertDescription>
+                Verifique que todos los campos obligatorios (*) estén completos y que la información sea correcta.
+              </AlertDescription>
+            </Alert>
 
             <Button
               type="submit"
