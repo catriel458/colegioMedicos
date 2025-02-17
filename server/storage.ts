@@ -1,4 +1,6 @@
 import { appointments, type Appointment, type InsertAppointment } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   createAppointment(appointment: InsertAppointment): Promise<Appointment>;
@@ -9,61 +11,45 @@ export interface IStorage {
   getAllAppointments(): Promise<Appointment[]>;
 }
 
-export class MemStorage implements IStorage {
-  private appointments: Map<number, Appointment>;
-  private currentId: number;
-
-  constructor() {
-    this.appointments = new Map();
-    this.currentId = 1;
-  }
-
-  async createAppointment(insertAppointment: InsertAppointment): Promise<Appointment> {
-    const id = this.currentId++;
-    const appointment: Appointment = {
-      ...insertAppointment,
-      id,
-      createdAt: new Date(),
-      status: "active"
-    };
-    this.appointments.set(id, appointment);
-    return appointment;
+export class DatabaseStorage implements IStorage {
+  async createAppointment(appointment: InsertAppointment): Promise<Appointment> {
+    const [created] = await db.insert(appointments).values(appointment).returning();
+    return created;
   }
 
   async getAppointment(id: number): Promise<Appointment | undefined> {
-    return this.appointments.get(id);
+    const [appointment] = await db.select().from(appointments).where(eq(appointments.id, id));
+    return appointment;
   }
 
   async getAppointmentsByDni(dni: string): Promise<Appointment[]> {
-    return Array.from(this.appointments.values()).filter(
-      (appointment) => appointment.dni === dni
-    );
+    return await db.select().from(appointments).where(eq(appointments.dni, dni));
   }
 
   async updateAppointment(
     id: number,
     appointmentUpdate: Partial<InsertAppointment>
   ): Promise<Appointment | undefined> {
-    const existing = this.appointments.get(id);
-    if (!existing) return undefined;
-
-    const updated = { ...existing, ...appointmentUpdate };
-    this.appointments.set(id, updated);
+    const [updated] = await db
+      .update(appointments)
+      .set(appointmentUpdate)
+      .where(eq(appointments.id, id))
+      .returning();
     return updated;
   }
 
   async cancelAppointment(id: number): Promise<boolean> {
-    const appointment = this.appointments.get(id);
-    if (!appointment) return false;
-
-    appointment.status = "cancelled";
-    this.appointments.set(id, appointment);
-    return true;
+    const [cancelled] = await db
+      .update(appointments)
+      .set({ status: "cancelled" })
+      .where(eq(appointments.id, id))
+      .returning();
+    return !!cancelled;
   }
 
   async getAllAppointments(): Promise<Appointment[]> {
-    return Array.from(this.appointments.values());
+    return await db.select().from(appointments);
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
