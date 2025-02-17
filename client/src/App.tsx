@@ -10,13 +10,14 @@ import CancelAppointment from "@/pages/appointments/cancel";
 import Reports from "@/pages/appointments/reports";
 import AdminDashboard from "@/pages/admin/dashboard";
 import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 flex-grow">
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/appointments/new" component={CreateAppointment} />
@@ -28,6 +29,7 @@ function Router() {
           <Route component={NotFound} />
         </Switch>
       </main>
+      <Footer />
     </div>
   );
 }
