@@ -7,6 +7,7 @@ import SearchAppointment from "@/pages/appointments/search";
 import ModifyAppointment from "@/pages/appointments/modify";
 import CancelAppointment from "@/pages/appointments/cancel";
 import Reports from "@/pages/appointments/reports";
+import AdminDashboard from "@/pages/admin/dashboard";
 import Navbar from "@/components/layout/navbar";
 import NotFound from "@/pages/not-found";
 
@@ -21,6 +22,7 @@ function Router() {
           <Route path="/modify" component={ModifyAppointment} />
           <Route path="/cancel" component={CancelAppointment} />
           <Route path="/reports" component={Reports} />
+          <Route path="/admin/dashboard" component={AdminDashboard} />
           <Route component={NotFound} />
         </Switch>
       </main>
