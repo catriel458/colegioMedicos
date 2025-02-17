@@ -19,6 +19,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Important: Search route must come before the generic :id route
+  app.get("/api/appointments/search/:dni", async (req, res) => {
+    try {
+      const { dni } = req.params;
+      if (!dni || dni.length < 8) {
+        res.status(400).json({ message: "Invalid DNI" });
+        return;
+      }
+
+      const appointments = await storage.getAppointmentsByDni(dni);
+      console.log(`Found ${appointments.length} appointments for DNI: ${dni}`);
+      res.json(appointments);
+    } catch (error) {
+      console.error("Error searching appointments:", error);
+      res.status(500).json({ message: "Error searching appointments" });
+    }
+  });
+
   app.get("/api/appointments/:id", async (req, res) => {
     const id = parseInt(req.params.id);
     if (isNaN(id)) {
@@ -31,15 +49,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return;
     }
     res.json(appointment);
-  });
-
-  app.get("/api/appointments/search/:dni", async (req, res) => {
-    try {
-      const appointments = await storage.getAppointmentsByDni(req.params.dni);
-      res.json(appointments);
-    } catch (error) {
-      res.status(500).json({ message: "Error searching appointments" });
-    }
   });
 
   app.patch("/api/appointments/:id", async (req, res) => {
@@ -84,6 +93,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const appointments = await storage.getAllAppointments();
       res.json(appointments);
     } catch (error) {
+      console.error("Error fetching all appointments:", error);
       res.status(500).json({ message: "Error fetching appointments" });
     }
   });

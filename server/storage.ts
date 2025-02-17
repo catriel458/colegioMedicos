@@ -23,7 +23,14 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAppointmentsByDni(dni: string): Promise<Appointment[]> {
-    return await db.select().from(appointments).where(eq(appointments.dni, dni));
+    try {
+      const results = await db.select().from(appointments).where(eq(appointments.dni, dni));
+      console.log(`Found ${results.length} appointments in database for DNI: ${dni}`);
+      return results;
+    } catch (error) {
+      console.error("Database error in getAppointmentsByDni:", error);
+      throw error;
+    }
   }
 
   async updateAppointment(
