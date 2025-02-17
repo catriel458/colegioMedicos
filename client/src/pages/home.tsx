@@ -26,7 +26,7 @@ const images = [
 export default function Home() {
   return (
     <div className="space-y-8">
-      <section className="relative">
+      <section className="relative max-w-4xl mx-auto">
         <Carousel
           opts={{
             align: "start",
@@ -37,7 +37,7 @@ export default function Home() {
           <CarouselContent>
             {images.map((image, index) => (
               <CarouselItem key={index}>
-                <div className="relative aspect-video overflow-hidden rounded-lg">
+                <div className="relative aspect-[16/9] overflow-hidden rounded-lg">
                   <img
                     src={image.url}
                     alt={image.alt}
@@ -47,8 +47,8 @@ export default function Home() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious className="left-2" />
+          <CarouselNext className="right-2" />
         </Carousel>
       </section>
 
