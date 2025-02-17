@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Calendar, Sun, Moon, Menu } from "lucide-react";
+import { LayoutDashboard, Calendar, Sun, Moon, Menu, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
 import { useState } from "react";
@@ -19,6 +19,7 @@ export default function Navbar() {
 
   const navItems = [
     { href: "/", label: "Inicio" },
+    { href: "/about", label: "Acerca de", icon: Info },
     { href: "/appointments/new", label: "Nuevo Turno", icon: Calendar },
     { href: "/appointments/search", label: "Buscar Turno" },
     { href: "/appointments/modify", label: "Modificar Turno" },
