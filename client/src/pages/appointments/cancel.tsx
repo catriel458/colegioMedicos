@@ -25,8 +25,16 @@ export default function CancelAppointment() {
   const queryClient = useQueryClient();
 
   const { data: appointments, isLoading } = useQuery<Appointment[]>({
-    queryKey: ["/api/appointments/search", searchDni],
+    queryKey: [`/api/appointments/search/${searchDni}`],
     enabled: searchDni.length >= 8,
+    retry: false,
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "No se pudieron cargar los turnos",
+        variant: "destructive",
+      });
+    },
   });
 
   const cancelMutation = useMutation({
@@ -39,7 +47,7 @@ export default function CancelAppointment() {
         title: "Turno cancelado",
         description: "El turno ha sido cancelado exitosamente",
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/appointments/search", searchDni] });
+      queryClient.invalidateQueries({ queryKey: [`/api/appointments/search/${searchDni}`] });
     },
     onError: () => {
       toast({

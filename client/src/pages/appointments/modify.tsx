@@ -33,12 +33,23 @@ export default function ModifyAppointment() {
   const queryClient = useQueryClient();
 
   const { data: appointments, isLoading: isSearching } = useQuery<Appointment[]>({
-    queryKey: ["/api/appointments/search", searchDni],
+    queryKey: [`/api/appointments/search/${searchDni}`],
     enabled: searchDni.length >= 8,
+    retry: false,
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "No se pudieron cargar los turnos",
+        variant: "destructive",
+      });
+    },
   });
 
   const form = useForm<InsertAppointment>({
     resolver: zodResolver(insertAppointmentSchema),
+    defaultValues: {
+      observations: "",
+    },
   });
 
   const updateMutation = useMutation({
@@ -52,7 +63,7 @@ export default function ModifyAppointment() {
         title: "Turno actualizado",
         description: "Los cambios han sido guardados exitosamente",
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/appointments/search", searchDni] });
+      queryClient.invalidateQueries({ queryKey: [`/api/appointments/search/${searchDni}`] });
       setSelectedAppointment(null);
       form.reset();
     },
@@ -67,12 +78,12 @@ export default function ModifyAppointment() {
 
   const handleSelectAppointment = (appointment: Appointment) => {
     setSelectedAppointment(appointment);
-    form.reset({
+    const formData = {
       ...appointment,
-      appointmentDate: new Date(appointment.appointmentDate)
-        .toISOString()
-        .split("T")[0],
-    });
+      appointmentDate: new Date(appointment.appointmentDate).toISOString().split("T")[0],
+      observations: appointment.observations || "",
+    };
+    form.reset(formData as InsertAppointment);
   };
 
   return (
@@ -217,7 +228,7 @@ export default function ModifyAppointment() {
                     <FormItem>
                       <FormLabel>Observaciones</FormLabel>
                       <FormControl>
-                        <Textarea {...field} />
+                        <Textarea {...field} value={field.value || ""} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
