@@ -21,9 +21,10 @@ export default function SearchAppointment() {
   const [searchInitiated, setSearchInitiated] = useState(false);
   const { toast } = useToast();
 
-  const { data: appointments, isLoading, error } = useQuery<Appointment[]>({ //Re-added error handling
+  const { data: appointments, isLoading } = useQuery<Appointment[]>({
     queryKey: [`/api/appointments/search/${searchDni}`],
     enabled: searchInitiated && searchDni.length >= 8,
+    retry: false,
     onError: () => {
       toast({
         title: "Error",
@@ -69,10 +70,6 @@ export default function SearchAppointment() {
 
         {isLoading ? (
           <div className="text-center py-4">Buscando turnos...</div>
-        ) : error ? ( //Re-added error handling
-          <div className="text-center py-4 text-destructive">
-            Ocurrió un error al buscar los turnos
-          </div>
         ) : appointments?.length ? (
           <Table>
             <TableHeader>
