@@ -21,6 +21,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/appointments/:id", async (req, res) => {
     const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      res.status(400).json({ message: "Invalid appointment ID" });
+      return;
+    }
     const appointment = await storage.getAppointment(id);
     if (!appointment) {
       res.status(404).json({ message: "Appointment not found" });
@@ -30,13 +34,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get("/api/appointments/search/:dni", async (req, res) => {
-    const appointments = await storage.getAppointmentsByDni(req.params.dni);
-    res.json(appointments);
+    try {
+      const appointments = await storage.getAppointmentsByDni(req.params.dni);
+      res.json(appointments);
+    } catch (error) {
+      res.status(500).json({ message: "Error searching appointments" });
+    }
   });
 
   app.patch("/api/appointments/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        res.status(400).json({ message: "Invalid appointment ID" });
+        return;
+      }
       const update = insertAppointmentSchema.partial().parse(req.body);
       const updated = await storage.updateAppointment(id, update);
       if (!updated) {
@@ -55,6 +67,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.delete("/api/appointments/:id", async (req, res) => {
     const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      res.status(400).json({ message: "Invalid appointment ID" });
+      return;
+    }
     const success = await storage.cancelAppointment(id);
     if (!success) {
       res.status(404).json({ message: "Appointment not found" });
@@ -64,8 +80,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get("/api/appointments", async (_req, res) => {
-    const appointments = await storage.getAllAppointments();
-    res.json(appointments);
+    try {
+      const appointments = await storage.getAllAppointments();
+      res.json(appointments);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching appointments" });
+    }
   });
 
   const httpServer = createServer(app);

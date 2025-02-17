@@ -14,19 +14,34 @@ import {
 import { format } from "date-fns";
 import { Search } from "lucide-react";
 import type { Appointment } from "@shared/schema";
+import { useToast } from "@/hooks/use-toast";
 
 export default function SearchAppointment() {
   const [searchDni, setSearchDni] = useState("");
   const [searchInitiated, setSearchInitiated] = useState(false);
+  const { toast } = useToast();
 
-  const { data: appointments, isLoading } = useQuery<Appointment[]>({
+  const { data: appointments, isLoading, error } = useQuery<Appointment[]>({
     queryKey: ["/api/appointments/search", searchDni],
     enabled: searchInitiated && searchDni.length >= 8,
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "No se pudieron cargar los turnos",
+        variant: "destructive",
+      });
+    },
   });
 
   const handleSearch = () => {
     if (searchDni.length >= 8) {
       setSearchInitiated(true);
+    } else {
+      toast({
+        title: "DNI inválido",
+        description: "El DNI debe tener al menos 8 caracteres",
+        variant: "destructive",
+      });
     }
   };
 
@@ -40,17 +55,24 @@ export default function SearchAppointment() {
           <Input
             placeholder="Ingrese DNI"
             value={searchDni}
-            onChange={(e) => setSearchDni(e.target.value)}
+            onChange={(e) => {
+              setSearchDni(e.target.value);
+              setSearchInitiated(false);
+            }}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
-          <Button onClick={handleSearch} disabled={searchDni.length < 8}>
+          <Button onClick={handleSearch} disabled={searchDni.length < 8 || isLoading}>
             <Search className="mr-2 h-4 w-4" />
-            Buscar
+            {isLoading ? "Buscando..." : "Buscar"}
           </Button>
         </div>
 
         {isLoading ? (
           <div className="text-center py-4">Buscando turnos...</div>
+        ) : error ? (
+          <div className="text-center py-4 text-destructive">
+            Ocurrió un error al buscar los turnos
+          </div>
         ) : appointments?.length ? (
           <Table>
             <TableHeader>
