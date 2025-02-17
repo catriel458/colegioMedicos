@@ -33,7 +33,7 @@ export default function Navbar() {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-6">
             <img
-              src="https://ibb.co/zW4QCJsG"
+              src="https://i.ibb.co/V0qJbmV2/images-removebg-preview.png"
               alt="Logo Colegio de Médicos"
               className="h-12 w-auto"
             />
