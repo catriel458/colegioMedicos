@@ -1,9 +1,12 @@
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Calendar } from "lucide-react";
+import { LayoutDashboard, Calendar, Sun, Moon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useTheme } from "@/hooks/use-theme";
 
 export default function Navbar() {
   const [location] = useLocation();
+  const { theme, setTheme } = useTheme();
 
   const navItems = [
     { href: "/", label: "Inicio" },
@@ -16,7 +19,7 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="border-b bg-white shadow-sm">
+    <header className="border-b bg-white shadow-sm dark:bg-gray-950">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-6">
@@ -43,6 +46,17 @@ export default function Navbar() {
               ))}
             </nav>
           </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          >
+            {theme === "light" ? (
+              <Moon className="h-5 w-5" />
+            ) : (
+              <Sun className="h-5 w-5" />
+            )}
+          </Button>
         </div>
       </div>
     </header>

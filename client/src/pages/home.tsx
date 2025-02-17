@@ -16,6 +16,10 @@ const images = [
     url: "https://www.expomedhub.com/img/blog/m%C3%A9dicos-especialistas-24.06.2020%20m%C3%A9dicos%20especialistas.jpg",
     alt: "Médicos Especialistas",
   },
+  {
+    url: "https://infocielo.com/wp-content/uploads/2024/12/medicosjpg-1.jpg",
+    alt: "Profesionales Médicos",
+  },
 ];
 
 export default function Home() {
@@ -51,7 +55,7 @@ export default function Home() {
         <h1 className="text-3xl font-bold tracking-tight text-primary">
           Colegio de Médicos de la Provincia de Buenos Aires
         </h1>
-        
+
         <Card className="bg-primary/5">
           <CardContent className="pt-6">
             <p className="text-lg leading-relaxed text-muted-foreground">
@@ -75,7 +79,7 @@ export default function Home() {
               </p>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="pt-6">
               <h3 className="text-lg font-semibold mb-2">Especialidades Médicas</h3>
@@ -84,7 +88,7 @@ export default function Home() {
               </p>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="pt-6">
               <h3 className="text-lg font-semibold mb-2">Regulación Profesional</h3>
