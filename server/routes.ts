@@ -19,7 +19,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Important: Search route must come before the generic :id route
+  // Search endpoint must come before the generic :id route to avoid conflicts
   app.get("/api/appointments/search/:dni", async (req, res) => {
     try {
       const { dni } = req.params;
