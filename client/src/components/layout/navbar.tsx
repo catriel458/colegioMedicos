@@ -19,7 +19,7 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="border-b bg-white shadow-sm dark:bg-gray-950">
+    <header className="bg-[#007bff] shadow-lg dark:bg-gray-900">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-6">
@@ -34,10 +34,10 @@ export default function Navbar() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "text-sm font-medium transition-colors hover:text-primary flex items-center gap-1",
+                    "text-sm font-medium transition-colors hover:text-white/90 flex items-center gap-1",
                     location === item.href
-                      ? "text-primary"
-                      : "text-muted-foreground"
+                      ? "text-white"
+                      : "text-white/75"
                   )}
                 >
                   {item.icon && <item.icon className="h-4 w-4" />}
@@ -49,6 +49,7 @@ export default function Navbar() {
           <Button
             variant="ghost"
             size="icon"
+            className="text-white hover:text-white/90"
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
           >
             {theme === "light" ? (

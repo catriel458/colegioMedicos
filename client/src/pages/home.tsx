@@ -6,6 +6,7 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
+import { Stethoscope, GraduationCap, Scale } from "lucide-react";
 
 const images = [
   {
@@ -56,7 +57,7 @@ export default function Home() {
           Colegio de Médicos de la Provincia de Buenos Aires
         </h1>
 
-        <Card className="bg-primary/5">
+        <Card className="bg-primary/5 hover:bg-primary/10 transition-colors">
           <CardContent className="pt-6">
             <p className="text-lg leading-relaxed text-muted-foreground">
               El Colegio de Médicos de la Provincia de Buenos Aires es la institución fundamental 
@@ -71,8 +72,11 @@ export default function Home() {
         </Card>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-          <Card>
+          <Card className="group hover:shadow-lg transition-all duration-300">
             <CardContent className="pt-6">
+              <div className="mb-4 flex justify-center">
+                <Stethoscope className="h-12 w-12 text-primary group-hover:scale-110 transition-transform" />
+              </div>
               <h3 className="text-lg font-semibold mb-2">Matrículas Profesionales</h3>
               <p className="text-muted-foreground">
                 Gestionamos y regulamos las matrículas médicas, garantizando la legitimidad del ejercicio profesional.
@@ -80,8 +84,11 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="group hover:shadow-lg transition-all duration-300">
             <CardContent className="pt-6">
+              <div className="mb-4 flex justify-center">
+                <GraduationCap className="h-12 w-12 text-primary group-hover:scale-110 transition-transform" />
+              </div>
               <h3 className="text-lg font-semibold mb-2">Especialidades Médicas</h3>
               <p className="text-muted-foreground">
                 Certificamos y supervisamos las especialidades médicas, asegurando la más alta calidad en la atención especializada.
@@ -89,8 +96,11 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="group hover:shadow-lg transition-all duration-300">
             <CardContent className="pt-6">
+              <div className="mb-4 flex justify-center">
+                <Scale className="h-12 w-12 text-primary group-hover:scale-110 transition-transform" />
+              </div>
               <h3 className="text-lg font-semibold mb-2">Regulación Profesional</h3>
               <p className="text-muted-foreground">
                 Establecemos y actualizamos los estándares profesionales y éticos de la práctica médica.
