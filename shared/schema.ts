@@ -16,7 +16,7 @@ export const appointments = pgTable("appointments", {
   procedure: text("procedure").notNull(),
   profession: text("profession").notNull(),
   observations: text("observations"),
-  createdAt: timestamp("createdAt").defaultNow(),
+  createdAt: date("createdAt").defaultNow(),
   status: text("status").default("active")
 });
 
