@@ -1,6 +1,13 @@
 import { appointments, type Appointment, type InsertAppointment } from "@shared/schema";
-import { db } from "./db";
 import { eq } from "drizzle-orm";
+import { randomBytes } from "crypto";
+import { drizzle } from "drizzle-orm/better-sqlite3";
+import Database from "better-sqlite3";
+
+// Configurar conexión a SQLite
+const sqlite = new Database("./data/database.sqlite");
+const db = drizzle(sqlite);
+
 
 export interface IStorage {
   createAppointment(appointment: InsertAppointment): Promise<Appointment>;

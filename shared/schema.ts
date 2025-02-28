@@ -1,22 +1,21 @@
-import { pgTable, text, serial, date, timestamp } from "drizzle-orm/pg-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
-import { es } from "date-fns/locale";
 import { addDays } from "date-fns";
 
-export const appointments = pgTable("appointments", {
-  id: serial("id").primaryKey(),
+export const appointments = sqliteTable("appointments", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
   lastName: text("lastName").notNull(),
   dni: text("dni").notNull(),
   phone: text("phone").notNull(),
   district: text("district").notNull(),
-  appointmentDate: date("appointmentDate").notNull(),
+  appointmentDate: text("appointmentDate").notNull(), // SQLite no tiene tipo date nativo
   appointmentTime: text("appointmentTime").notNull(),
   procedure: text("procedure").notNull(),
   profession: text("profession").notNull(),
   observations: text("observations"),
-  createdAt: date("createdAt").defaultNow(),
+  createdAt: text("createdAt").default(String(new Date().toISOString().split('T')[0])),
   status: text("status").default("active")
 });
 
