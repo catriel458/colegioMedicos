@@ -11,6 +11,7 @@ La interfaz de usuario está construida con:
     TanStack Query: Biblioteca para el manejo eficiente de datos en el frontend, asegurando una experiencia fluida y optimizada.
     Tailwind CSS: Framework de diseño de clases utilitarias para crear interfaces rápidas, flexibles y responsivas.
     Radix UI: Componentes accesibles y personalizables para mejorar la interacción con el usuario.
+    Vite: Herramienta de construcción ultrarrápida para el desarrollo de aplicaciones modernas.
 
 Backend Robusto
 
