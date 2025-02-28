@@ -34,7 +34,7 @@ Inicia la aplicación:
      npm start
 
 Asegúrate de tener Node.js instalado previamente en tu sistema.
-Producción
+
 
 También puedes acceder a la aplicación en producción directamente desde este enlace:
 
