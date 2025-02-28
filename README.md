@@ -1,32 +1,43 @@
-git clone https://github.com/catriel458/medical-appointments.git
-```
+ColegioMedicos
 
-2. Instalar dependencias
-```bash
-npm install
-```
+ColegioMedicos es un proyecto moderno y eficiente para la gestión de los médicos, desarrollado con tecnologías avanzadas y un diseño intuitivo. La aplicación está dividida en dos partes principales: un Frontend fluido y Responsive, y un Backend robusto.
+Tecnologías
+Frontend Moderno
 
-3. Configurar variables de entorno
-```bash
-cp .env.example .env
-```
+La interfaz de usuario está construida con:
 
-4. Iniciar el servidor de desarrollo
-```bash
-npm run dev
-```
+    React: Framework de JavaScript para crear interfaces interactivas.
+    TypeScript: Añade tipado estático a JavaScript para una mayor seguridad y robustez.
+    TanStack Query: Biblioteca para el manejo eficiente de datos en el frontend, asegurando una experiencia fluida y optimizada.
+    Tailwind CSS: Framework de diseño de clases utilitarias para crear interfaces rápidas, flexibles y responsivas.
+    Radix UI: Componentes accesibles y personalizables para mejorar la interacción con el usuario.
 
-## 🏗️ Arquitectura
+Backend Robusto
 
-```
-├── client/               # Frontend React
-│   ├── src/
-│   │   ├── components/   # Componentes reutilizables
-│   │   ├── pages/       # Páginas de la aplicación
-│   │   ├── hooks/       # Hooks personalizados
-│   │   └── lib/         # Utilidades y configuración
-├── server/              # Backend Express
-│   ├── routes/         # Rutas de la API
-│   └── db/             # Configuración de base de datos
-└── shared/             # Código compartido
-    └── schema.ts       # Esquemas de validación
+El backend está construido con:
+
+    Express: Framework de Node.js para manejar las solicitudes HTTP y construir una API RESTful eficiente.
+    SQLite: Base de datos ligera, ideal para aplicaciones de pequeño a mediano tamaño.
+    Drizzle ORM: ORM ligero para una gestión eficiente de datos en la base de datos.
+
+Clona el repositorio:
+
+    git clone https://github.com/catriel458/colegioMedicos.git
+    
+Instala las dependencias:
+
+    npm install
+    
+Inicia la aplicación:
+
+     npm start
+
+Asegúrate de tener Node.js instalado previamente en tu sistema.
+Producción
+
+También puedes acceder a la aplicación en producción directamente desde este enlace:
+
+https://colegiomedicos.up.railway.app/
+
+
+
